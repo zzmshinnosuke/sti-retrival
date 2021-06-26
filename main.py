@@ -245,7 +245,7 @@ def main():
     os.environ["CUDA_VISIBLE_DEVICES"] = "1"
     torch.set_num_threads(3)
 
-    logger=SummaryWriter(comment=opt.logger_comment)
+    logger=SummaryWriter(opt.logger_path+opt.logger_comment)
     print('Log files saved to',logger.file_writer.get_logdir())
     for k in list(opt.__dict__.keys()):
         logger.add_text(k, str(opt.__dict__[k]))
@@ -303,4 +303,4 @@ def main_test():
             print("=> no checkpoint found at '{}'".format(opt.resume))
 
 if __name__=='__main__':
-      main_test()
+      main()

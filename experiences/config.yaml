@@ -1,16 +1,16 @@
 common: 
     model: imgonly
-    resume: ./runs/Mar04_21-11-53_dp3090sti_imageonly_allsketch/best_checkpoint.pth
+    resume: False
 
     logger_comment: sti_imageonly_allsketch
-    logger_path: ~/tmp/logs/stiretrival/
+    logger_path: /data/zzm/tmp/logs/stiretrival/
     best_model: True
-    model_path: ~/tmp/logs/stiretrival/
+    model_path: /data/zzm/tmp/logs/stiretrival/
 
     dataset: 
         type: Full
         name: STI
-        dataset_path: ./STI
+        dataset_path: /data/zzm/datasets/STI
         loader_num_workers: 4
         shuffle: True
         drop_last: True

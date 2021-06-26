@@ -4,7 +4,7 @@ import torch.utils.data
 import torchvision
 import PIL
 import skimage.io
-from os import listdir
+import os
 import json
 
 class BaseDataset(torch.utils.data.Dataset):
@@ -44,39 +44,35 @@ class STIDataset(BaseDataset):
         self.transform=transform
         self.split=split
 
-        self.skes_img=[]
+        self.skes=[]
         self.texts={}
 
-        if split=='test':
-            for f in listdir(path+'/test/'):
-                assert (f.endswith('json'))
-                name=f.split('.')[0]
-                self.skes_img.append({"ske_img_path":path+'/sketch-png/'+name+'.png',
-                                      "img_path":path+'/image/'+name+'.jpg',
-                                      "img_name":name+'.jpg'})
-        
-        if split=='train':
-            for f in listdir(path+'/train/'):
-                assert (f.endswith('json'))
-                name=f.split('.')[0]
-                self.skes_img.append({"ske_img_path":path+'/sketch-png/'+name+'.png',
-                                      "img_path":path+'/image/'+name+'.jpg',
-                                      "img_name":name+'.jpg'})
+        with open(os.path.join(path,split+'_names.txt')) as f:
+            print("load "+split+" dataset")
+            line=f.readline()
+            while line:
+                skename=line.strip()
+                assert (skename.endswith('json'))
+                skename=skename.split('.')[0]
+                self.skes.append({"ske_img_path":os.path.join(path,"sketch-png",skename+'.png'),
+                                  "img_path":os.path.join(path,"image",skename+'.jpg'),
+                                  "img_name":skename+'.jpg'})
+                line=f.readline()
 
     def __getitem__(self, idx):
         out={}
         out['source_ske_id']=idx
-        out['source_ske_name']=self.skes_img[idx]['img_name']
-        out['source_ske_img_data']=self.get_img(self.skes_img[idx]['ske_img_path'])
+        out['source_ske_name']=self.skes[idx]['img_name']
+        out['source_ske_img_data']=self.get_img(self.skes[idx]['ske_img_path'])
         out['source_caption']=""
         out['target_img_id']=idx
-        out['target_img_name']=self.skes_img[idx]['img_name']
-        out['target_img_data']=self.get_img(self.skes_img[idx]['img_path'])
+        out['target_img_name']=self.skes[idx]['img_name']
+        out['target_img_data']=self.get_img(self.skes[idx]['img_path'])
         out['mod']={'str':""} 
         return out
 
     def __len__(self):
-        return len(self.skes_img)
+        return len(self.skes)
 
     def get_all_texts(self):
         texts=[]

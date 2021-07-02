@@ -28,15 +28,20 @@ def get_parser():
                         default=True,
                         help='shuffle')
     
-    #model
-    parser.add_argument('--model',
-                        required=True,
-                        help='the model type')
-      
     parser.add_argument('--batch_size',
                         type=int,
                         default=32,
                         help='the batch size')
+    
+    #model
+    parser.add_argument('--model',
+                        required=True,
+                        help='the model type')
+
+    parser.add_argument('--embed_dim',
+                        type=int,
+                        default=512,
+                        help='output feature dim')
     
     parser.add_argument('--n_epoch',
                         type=int,
@@ -64,17 +69,28 @@ def get_parser():
     #optimizer
     parser.add_argument('--learning_rate',
                         type=float,
-                        default=0.01,
-                        help='the dropout ratio')
+                        default=0.1,
+                        help='optimizer learning_rate')
     
     parser.add_argument('--momentum',
                         type=float,
                         default=0.9,
-                        help='the dropout ratio')
+                        help='optimizer momentum')
     
     parser.add_argument('--weight_decay',
                         type=float,
                         default=0.00005,
-                        help='the dropout ratio')
+                        help='optimizer weight_decay')
+
+    #lr_scheduler:
+    parser.add_argument('--learning_rate_decay_frequency',
+                        type=int,
+                        default=30,
+                        help='lr_scheduler learning_rate_decay_frequency')
+    
+    parser.add_argument('--learning_rate_factor',
+                        type=float,
+                        default=0.5,
+                        help='lr_scheduler learning_rate_factor')
     
     return parser

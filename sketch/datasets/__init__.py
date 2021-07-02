@@ -13,7 +13,6 @@ def get_dataset(config,split='train'):
 
 def get_loader(config,split='train'):
     dataset=get_dataset(config,split)
-    
     loader=td.DataLoader(dataset,
                         batch_size=config.batch_size,
                         shuffle=True if split=='train' else False,
